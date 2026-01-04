@@ -12,6 +12,7 @@ class BaseMongoModel(BaseModel):
     Abstract base model with common fields.
     All MongoDB models should inherit from this.
     """
+
     model_config = ConfigDict(
         from_attributes=True,
         populate_by_name=True,
@@ -24,4 +25,3 @@ class BaseMongoModel(BaseModel):
 
     def __repr__(self):
         return f"<{self.__class__.__name__}(id={self.id})>"
-

@@ -50,7 +50,7 @@ async def check_database_connection() -> Tuple[bool, str]:
     """Check MongoDB connection and return status"""
     try:
         # Ping the server
-        await get_client().admin.command('ping')
+        await get_client().admin.command("ping")
         return True, "connected"
     except ServerSelectionTimeoutError as e:
         return False, f"Connection timeout: {str(e)}"
@@ -94,4 +94,3 @@ async def close_db():
     if client:
         client.close()
         client = None
-

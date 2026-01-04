@@ -99,7 +99,7 @@ class BaseRepository(ABC, Generic[ModelType]):
         db: AsyncIOMotorDatabase,
         skip: int = 0,
         limit: int = 100,
-        filter_dict: Optional[Dict[str, Any]] = None
+        filter_dict: Optional[Dict[str, Any]] = None,
     ) -> List[ModelType]:
         """
         Get all documents with pagination.
@@ -123,25 +123,28 @@ class BaseRepository(ABC, Generic[ModelType]):
         self,
         db: AsyncIOMotorDatabase,
         pagination: PaginationParams,
-        filter_dict: Optional[Dict[str, Any]] = None
+        filter_dict: Optional[Dict[str, Any]] = None,
     ) -> PaginatedResponse[ModelType]:
         """
         Get all documents with pagination and metadata.
         Similar to SQL version.
         """
         total = await self.count(db, filter_dict)
-        items = await self.get_all(db, skip=pagination.skip, limit=pagination.limit, filter_dict=filter_dict)
+        items = await self.get_all(
+            db, skip=pagination.skip, limit=pagination.limit, filter_dict=filter_dict
+        )
 
         from app.common.utils.pagination import PaginationMeta
+
         meta = PaginationMeta.create(
-            total=total,
-            page=pagination.page,
-            page_size=pagination.page_size
+            total=total, page=pagination.page, page_size=pagination.page_size
         )
 
         return PaginatedResponse(items=items, meta=meta)
 
-    async def update(self, db: AsyncIOMotorDatabase, id: str, update_data: Dict[str, Any]) -> Optional[ModelType]:
+    async def update(
+        self, db: AsyncIOMotorDatabase, id: str, update_data: Dict[str, Any]
+    ) -> Optional[ModelType]:
         """
         Update a document.
 
@@ -156,10 +159,7 @@ class BaseRepository(ABC, Generic[ModelType]):
         collection = self._get_collection(db)
         update_data["updated_at"] = datetime.utcnow()
 
-        result = await collection.update_one(
-            {"_id": ObjectId(id)},
-            {"$set": update_data}
-        )
+        result = await collection.update_one({"_id": ObjectId(id)}, {"$set": update_data})
 
         if result.modified_count:
             updated = await collection.find_one({"_id": ObjectId(id)})
@@ -184,7 +184,9 @@ class BaseRepository(ABC, Generic[ModelType]):
         except Exception:
             return False
 
-    async def count(self, db: AsyncIOMotorDatabase, filter_dict: Optional[Dict[str, Any]] = None) -> int:
+    async def count(
+        self, db: AsyncIOMotorDatabase, filter_dict: Optional[Dict[str, Any]] = None
+    ) -> int:
         """
         Count documents.
 
@@ -208,4 +210,3 @@ class BaseRepository(ABC, Generic[ModelType]):
             doc["id"] = str(doc["_id"])
             doc.pop("_id")
         return self.model_class(**doc)
-

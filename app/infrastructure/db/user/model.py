@@ -13,6 +13,7 @@ class User(BaseMongoModel):
     User MongoDB document model.
     Represents documents in the 'users' collection.
     """
+
     email: Optional[str] = Field(None, index=True)
     phone: Optional[str] = Field(None, index=True)
     password_hash: str
@@ -21,4 +22,3 @@ class User(BaseMongoModel):
 
     def __repr__(self):
         return f"<User(id={self.id}, email={self.email}, role={self.role.value})>"
-

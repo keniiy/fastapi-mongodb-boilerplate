@@ -31,7 +31,7 @@ class UserRepositoryAdapter(IUserRepository):
             role=UserRole(model.role.value) if model.role else UserRole.STUDENT,
             is_active=model.is_active,
             created_at=model.created_at or datetime.utcnow(),
-            updated_at=model.updated_at
+            updated_at=model.updated_at,
         )
 
     def _entity_to_model(self, entity: UserEntity, password_hash: str = "") -> UserModel:
@@ -44,7 +44,7 @@ class UserRepositoryAdapter(IUserRepository):
             role=entity.role,
             is_active=entity.is_active,
             created_at=entity.created_at,
-            updated_at=entity.updated_at
+            updated_at=entity.updated_at,
         )
 
     async def create(self, user: UserEntity, password_hash: str = "") -> UserEntity:
@@ -101,7 +101,7 @@ class UserRepositoryAdapter(IUserRepository):
             "phone": user.phone,
             "role": user.role.value,
             "is_active": user.is_active,
-            "updated_at": user.updated_at or datetime.utcnow()
+            "updated_at": user.updated_at or datetime.utcnow(),
         }
 
         updated = await self._repo.update(self.db, user.id, update_data)
@@ -120,4 +120,3 @@ class UserRepositoryAdapter(IUserRepository):
         if not updated:
             raise ValueError("User not found")
         return self._model_to_entity(updated)
-

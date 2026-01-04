@@ -31,10 +31,7 @@ class UserRepository(BaseRepository[User]):
         return self._dict_to_model(doc)
 
     async def get_by_email_or_phone(
-        self,
-        db: AsyncIOMotorDatabase,
-        email: str | None = None,
-        phone: str | None = None
+        self, db: AsyncIOMotorDatabase, email: str | None = None, phone: str | None = None
     ) -> Optional[User]:
         """Get user by email or phone"""
         if email:
@@ -48,27 +45,21 @@ class UserRepository(BaseRepository[User]):
         return await self.update(db, user_id, {"is_active": False})
 
     async def get_all_active(
-        self,
-        db: AsyncIOMotorDatabase,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncIOMotorDatabase, skip: int = 0, limit: Optional[int] = None
     ) -> List[User]:
         """Get all active users"""
-        return await self.get_all(db, skip=skip, limit=limit or 100, filter_dict={"is_active": True})
+        return await self.get_all(
+            db, skip=skip, limit=limit or 100, filter_dict={"is_active": True}
+        )
 
     async def get_all_active_paginated(
-        self,
-        db: AsyncIOMotorDatabase,
-        pagination: PaginationParams
+        self, db: AsyncIOMotorDatabase, pagination: PaginationParams
     ) -> PaginatedResponse[User]:
         """Get all active users with pagination"""
         return await self.get_all_paginated(db, pagination, filter_dict={"is_active": True})
 
     async def get_all_active_with_count(
-        self,
-        db: AsyncIOMotorDatabase,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncIOMotorDatabase, skip: int = 0, limit: Optional[int] = None
     ) -> Tuple[List[User], int]:
         """
         Get all active users with total count.
@@ -79,36 +70,24 @@ class UserRepository(BaseRepository[User]):
         return items, total
 
     async def get_by_role(
-        self,
-        db: AsyncIOMotorDatabase,
-        role: str,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncIOMotorDatabase, role: str, skip: int = 0, limit: Optional[int] = None
     ) -> List[User]:
         """Get users by role"""
         filter_dict = {"role": role, "is_active": True}
         return await self.get_all(db, skip=skip, limit=limit or 100, filter_dict=filter_dict)
 
     async def get_by_role_paginated(
-        self,
-        db: AsyncIOMotorDatabase,
-        role: str,
-        pagination: PaginationParams
+        self, db: AsyncIOMotorDatabase, role: str, pagination: PaginationParams
     ) -> PaginatedResponse[User]:
         """Get users by role with pagination"""
         filter_dict = {"role": role, "is_active": True}
         return await self.get_all_paginated(db, pagination, filter_dict=filter_dict)
 
     async def get_by_role_with_count(
-        self,
-        db: AsyncIOMotorDatabase,
-        role: str,
-        skip: int = 0,
-        limit: Optional[int] = None
+        self, db: AsyncIOMotorDatabase, role: str, skip: int = 0, limit: Optional[int] = None
     ) -> Tuple[List[User], int]:
         """Get users by role with total count"""
         filter_dict = {"role": role, "is_active": True}
         total = await self.count(db, filter_dict)
         items = await self.get_by_role(db, role, skip=skip, limit=limit)
         return items, total
-

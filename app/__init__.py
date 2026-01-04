@@ -1,2 +1,1 @@
 # FastAPI MongoDB Application
-

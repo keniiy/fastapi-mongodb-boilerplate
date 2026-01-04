@@ -11,14 +11,14 @@ from app.common.exceptions import DomainException
 from app.presentation.exceptions import (
     domain_exception_handler,
     validation_exception_handler,
-    general_exception_handler
+    general_exception_handler,
 )
 from app.presentation.middleware.trace_id import TraceIDMiddleware
 from app.presentation.middleware.rate_limit import (
     limiter,
     rate_limit_exception_handler,
     RateLimitMiddleware,
-    RateLimitExceeded
+    RateLimitExceeded,
 )
 from app.core.config import get_settings
 from app.common.utils.logging import setup_logging
@@ -29,10 +29,7 @@ load_dotenv()
 settings = get_settings()
 
 # Configure logging on startup
-setup_logging(
-    log_level=settings.log_level,
-    json_format=settings.log_json_format
-)
+setup_logging(log_level=settings.log_level, json_format=settings.log_json_format)
 
 
 @asynccontextmanager
@@ -101,12 +98,10 @@ app = FastAPI(
     * **OpenAPI**: JSON schema at `/openapi.json`
     """,
     version="1.0.0",
-    contact={
-        "name": "Keniiy",
-        "email": "kehindekehinde894@gmail.com"
-    },
+    contact={"name": "Keniiy", "email": "kehindekehinde894@gmail.com"},
     lifespan=lifespan,
 )
+
 
 # Add CORS middleware
 def get_cors_origins() -> List[str]:
@@ -122,6 +117,7 @@ def get_cors_origins() -> List[str]:
     cors_origins = settings.cors_origins
     if cors_origins == "*":
         import logging
+
         logger = logging.getLogger(__name__)
         logger.warning(
             "⚠️  CORS_ORIGINS is set to '*' in production. "
@@ -164,16 +160,12 @@ async def health():
     from app.infrastructure.db.config import get_client
     from app.infrastructure.cache.redis_client import redis_client
 
-    health_status = {
-        "status": "ok",
-        "service": "api",
-        "version": "1.0.0"
-    }
+    health_status = {"status": "ok", "service": "api", "version": "1.0.0"}
 
     # Check database connectivity
     try:
         client = get_client()
-        await client.admin.command('ping')
+        await client.admin.command("ping")
         health_status["database"] = "connected"
     except Exception as e:
         health_status["database"] = "disconnected"
@@ -187,4 +179,3 @@ async def health():
         health_status["redis_error"] = redis_msg
 
     return health_status
-

@@ -67,17 +67,10 @@ async def client(test_db) -> AsyncGenerator[AsyncClient, None]:
 @pytest.fixture
 def test_user_data():
     """Sample user data for tests"""
-    return {
-        "email": "test@example.com",
-        "password": "testpassword123"
-    }
+    return {"email": "test@example.com", "password": "testpassword123"}
 
 
 @pytest.fixture
 def test_user_phone_data():
     """Sample user data with phone for tests"""
-    return {
-        "phone": "+1234567890",
-        "password": "testpassword123"
-    }
-
+    return {"phone": "+1234567890", "password": "testpassword123"}
