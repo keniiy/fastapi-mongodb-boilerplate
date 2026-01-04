@@ -1,0 +1,45 @@
+# Development docker-compose - runs only dependencies
+# Use this for local development with hot reload
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7-jammy
+    container_name: app_mongodb_dev
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: app_db
+    volumes:
+      - mongodb_data_dev:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (for caching, rate limiting, and Celery in development)
+  redis:
+    image: redis:7-alpine
+    container_name: app_redis_dev
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_dev:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongodb_data_dev:
+  redis_data_dev:
+
+networks:
+  default:
+    name: app_network_dev
+
