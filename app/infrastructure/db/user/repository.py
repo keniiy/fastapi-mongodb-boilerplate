@@ -72,9 +72,7 @@ class UserRepository(BaseRepository[User]):
                 {"phone": {"$regex": search, "$options": "i"}},
             ]
 
-        return await self.get_all(
-            db, skip=skip, limit=limit or 100, filter_dict=filter_dict
-        )
+        return await self.get_all(db, skip=skip, limit=limit or 100, filter_dict=filter_dict)
 
     async def get_all_active_paginated(
         self,
