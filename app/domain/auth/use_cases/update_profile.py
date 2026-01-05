@@ -1,6 +1,7 @@
 """
 Update profile use case.
 """
+
 from typing import Optional
 
 from app.common.exceptions import NotFoundError

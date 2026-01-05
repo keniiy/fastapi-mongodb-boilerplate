@@ -2,6 +2,7 @@
 Abstract base repository for MongoDB with common CRUD operations.
 Similar structure to SQL base_repository.py but using Motor/MongoDB queries.
 """
+
 from abc import ABC
 from datetime import datetime
 from typing import Any, Dict, Generic, List, Optional, TypeVar

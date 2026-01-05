@@ -2,6 +2,7 @@
 User domain entity - pure business object.
 No database dependencies, just business logic.
 """
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional

@@ -1,6 +1,7 @@
 """
 JWT token utilities for encoding and decoding tokens.
 """
+
 from datetime import datetime, timedelta, timezone
 from typing import Dict, Optional
 

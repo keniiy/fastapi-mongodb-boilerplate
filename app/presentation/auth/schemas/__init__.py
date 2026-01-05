@@ -1,6 +1,7 @@
 """
 Authentication schemas - request and response models.
 """
+
 from .requests import (
     ChangePasswordRequest,
     LoginRequest,

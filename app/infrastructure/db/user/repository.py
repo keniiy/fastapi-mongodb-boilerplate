@@ -2,6 +2,7 @@
 User repository for MongoDB.
 Similar structure to SQL UserRepository.
 """
+
 from typing import List, Optional, Tuple
 
 from motor.motor_asyncio import AsyncIOMotorDatabase

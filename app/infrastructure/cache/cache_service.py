@@ -2,6 +2,7 @@
 Cache service for application-level caching operations.
 Provides a high-level API for caching with automatic serialization.
 """
+
 import json
 import logging
 from datetime import timedelta

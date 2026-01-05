@@ -1,6 +1,7 @@
 """
 Comprehensive exception handlers for all error types.
 """
+
 import logging
 from typing import Dict, Type
 

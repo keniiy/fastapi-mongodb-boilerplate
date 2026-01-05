@@ -3,6 +3,7 @@ User repository interface.
 Defines the contract for user data access operations.
 Implementation is in infrastructure layer.
 """
+
 from abc import ABC, abstractmethod
 from typing import Optional, Tuple
 

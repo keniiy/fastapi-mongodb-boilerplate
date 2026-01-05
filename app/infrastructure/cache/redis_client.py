@@ -1,6 +1,7 @@
 """
 Redis client configuration and connection management.
 """
+
 import logging
 from contextlib import asynccontextmanager
 from typing import Optional

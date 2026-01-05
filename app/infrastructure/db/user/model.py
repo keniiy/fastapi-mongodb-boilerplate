@@ -2,6 +2,7 @@
 User MongoDB model using Pydantic.
 Similar to SQL User model but for MongoDB.
 """
+
 from typing import Optional
 
 from pydantic import Field

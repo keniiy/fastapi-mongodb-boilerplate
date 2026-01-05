@@ -2,6 +2,7 @@
 MongoDB database configuration and connection management.
 Similar structure to SQL database.py but using Motor (async MongoDB driver).
 """
+
 import logging
 from typing import Tuple
 

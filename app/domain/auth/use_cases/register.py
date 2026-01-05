@@ -1,6 +1,7 @@
 """
 Register user use case.
 """
+
 from typing import Optional
 
 from app.common.enums.user import UserRole

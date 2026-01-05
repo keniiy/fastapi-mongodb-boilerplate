@@ -1,6 +1,7 @@
 """
 User-related background tasks.
 """
+
 import logging
 from datetime import datetime, timezone
 

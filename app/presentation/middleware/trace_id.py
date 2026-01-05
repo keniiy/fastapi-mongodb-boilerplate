@@ -2,6 +2,7 @@
 Trace ID middleware for request tracing and observability.
 Generates unique trace IDs for each request and attaches them to request state and context.
 """
+
 import uuid
 from typing import Optional
 

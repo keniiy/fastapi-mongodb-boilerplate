@@ -1,6 +1,7 @@
 """
 Email-related background tasks.
 """
+
 import logging
 from typing import Optional
 

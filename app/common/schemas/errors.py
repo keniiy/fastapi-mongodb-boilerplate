@@ -1,6 +1,7 @@
 """
 Structured error response schemas.
 """
+
 from datetime import datetime, timezone
 from typing import Any, List, Optional
 

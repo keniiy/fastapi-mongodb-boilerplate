@@ -2,6 +2,7 @@
 Authentication request schemas.
 All incoming request models for auth endpoints.
 """
+
 from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field, model_validator

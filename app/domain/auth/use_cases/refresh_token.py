@@ -1,6 +1,7 @@
 """
 Refresh token use case.
 """
+
 from typing import Dict
 
 from app.common.exceptions import UnauthorizedError

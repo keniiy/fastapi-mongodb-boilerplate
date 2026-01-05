@@ -2,6 +2,7 @@
 Pytest configuration and fixtures.
 Sets up test database, client, and common fixtures for MongoDB.
 """
+
 import asyncio
 import os
 from typing import AsyncGenerator, Generator

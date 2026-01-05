@@ -1,6 +1,7 @@
 """
 Structured logging configuration with trace ID support.
 """
+
 import logging
 import sys
 from contextvars import ContextVar

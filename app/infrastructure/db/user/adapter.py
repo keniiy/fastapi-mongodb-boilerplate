@@ -3,6 +3,7 @@ Repository adapter - bridges infrastructure repository with domain interface.
 Converts between MongoDB models and domain entities.
 This is infrastructure concern - adapting infrastructure to domain.
 """
+
 from datetime import datetime
 from typing import Optional, Tuple
 

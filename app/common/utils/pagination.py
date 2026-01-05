@@ -1,6 +1,7 @@
 """
 Pagination utilities and response models.
 """
+
 from dataclasses import dataclass
 from typing import Any, Generic, List, TypeVar
 

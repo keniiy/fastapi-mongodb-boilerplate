@@ -2,6 +2,7 @@
 Rate limiting middleware using slowapi.
 Global rate limiting applied to all endpoints with per-endpoint overrides.
 """
+
 from fastapi import status
 from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded

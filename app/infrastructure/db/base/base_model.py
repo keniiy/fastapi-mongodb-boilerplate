@@ -2,6 +2,7 @@
 Base Pydantic model for MongoDB documents.
 Similar to SQL BaseModel but using Pydantic instead of SQLAlchemy.
 """
+
 from datetime import datetime
 from typing import Optional
 

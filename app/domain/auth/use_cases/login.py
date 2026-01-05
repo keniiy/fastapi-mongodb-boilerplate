@@ -1,6 +1,7 @@
 """
 Login user use case.
 """
+
 from typing import Dict, Optional, Tuple
 
 from app.common.exceptions import UnauthorizedError, ValidationError

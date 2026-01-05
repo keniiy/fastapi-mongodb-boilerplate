@@ -1,6 +1,7 @@
 """
 Comprehensive domain exceptions with error codes.
 """
+
 from typing import Any, Dict, Optional
 
 

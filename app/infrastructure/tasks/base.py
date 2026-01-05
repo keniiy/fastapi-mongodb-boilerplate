@@ -1,6 +1,7 @@
 """
 Base task class with common functionality.
 """
+
 import logging
 from typing import Any, Optional
 
