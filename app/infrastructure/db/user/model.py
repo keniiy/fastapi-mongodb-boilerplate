@@ -2,10 +2,12 @@
 User MongoDB model using Pydantic.
 Similar to SQL User model but for MongoDB.
 """
-from pydantic import Field
 from typing import Optional
-from app.infrastructure.db.base.base_model import BaseMongoModel
+
+from pydantic import Field
+
 from app.common.enums.user import UserRole
+from app.infrastructure.db.base.base_model import BaseMongoModel
 
 
 class User(BaseMongoModel):

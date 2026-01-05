@@ -2,11 +2,13 @@
 User repository for MongoDB.
 Similar structure to SQL UserRepository.
 """
+from typing import List, Optional, Tuple
+
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from typing import Optional, List, Tuple
+
+from app.common.utils.pagination import PaginatedResponse, PaginationParams
 from app.infrastructure.db.base.base_repository import BaseRepository
 from app.infrastructure.db.user.model import User
-from app.common.utils.pagination import PaginationParams, PaginatedResponse
 
 
 class UserRepository(BaseRepository[User]):

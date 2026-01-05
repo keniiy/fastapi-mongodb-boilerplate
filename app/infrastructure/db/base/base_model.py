@@ -2,9 +2,10 @@
 Base Pydantic model for MongoDB documents.
 Similar to SQL BaseModel but using Pydantic instead of SQLAlchemy.
 """
-from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from typing import Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class BaseMongoModel(BaseModel):

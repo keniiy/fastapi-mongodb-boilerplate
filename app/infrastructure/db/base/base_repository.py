@@ -3,13 +3,14 @@ Abstract base repository for MongoDB with common CRUD operations.
 Similar structure to SQL base_repository.py but using Motor/MongoDB queries.
 """
 from abc import ABC
-from typing import Generic, TypeVar, Optional, List, Dict, Any
+from datetime import datetime
+from typing import Any, Dict, Generic, List, Optional, TypeVar
+
+from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from pymongo.errors import DuplicateKeyError
-from bson import ObjectId
-from datetime import datetime
-from app.common.utils.pagination import PaginationParams, PaginatedResponse
 
+from app.common.utils.pagination import PaginatedResponse, PaginationParams
 
 # TypeVar for generic repository pattern
 ModelType = TypeVar("ModelType")

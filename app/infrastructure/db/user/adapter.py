@@ -3,14 +3,16 @@ Repository adapter - bridges infrastructure repository with domain interface.
 Converts between MongoDB models and domain entities.
 This is infrastructure concern - adapting infrastructure to domain.
 """
-from typing import Optional, Tuple
 from datetime import datetime
+from typing import Optional, Tuple
+
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from app.domain.user.types.repository import IUserRepository
-from app.domain.user.entities.user import User as UserEntity
-from app.infrastructure.db.user.repository import UserRepository as InfraUserRepository
-from app.infrastructure.db.user.model import User as UserModel
+
 from app.common.enums.user import UserRole
+from app.domain.user.entities.user import User as UserEntity
+from app.domain.user.types.repository import IUserRepository
+from app.infrastructure.db.user.model import User as UserModel
+from app.infrastructure.db.user.repository import UserRepository as InfraUserRepository
 
 
 class UserRepositoryAdapter(IUserRepository):

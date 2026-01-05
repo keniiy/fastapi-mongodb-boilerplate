@@ -2,11 +2,12 @@
 Pytest configuration and fixtures.
 Sets up test database, client, and common fixtures for MongoDB.
 """
-import os
-import pytest
 import asyncio
+import os
 from typing import AsyncGenerator, Generator
-from httpx import AsyncClient, ASGITransport
+
+import pytest
+from httpx import ASGITransport, AsyncClient
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ServerSelectionTimeoutError
 
@@ -19,7 +20,7 @@ os.environ["ENVIRONMENT"] = "test"
 os.environ["RATE_LIMIT_ENABLED"] = "false"  # Disable rate limiting in tests
 
 from app.app import app
-from app.infrastructure.db.config import get_db, get_database
+from app.infrastructure.db.config import get_database, get_db
 
 
 @pytest.fixture(scope="session")

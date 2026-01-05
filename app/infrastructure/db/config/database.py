@@ -2,11 +2,13 @@
 MongoDB database configuration and connection management.
 Similar structure to SQL database.py but using Motor (async MongoDB driver).
 """
+import logging
 from typing import Tuple
+
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from pymongo.errors import ServerSelectionTimeoutError
+
 from app.core.config import get_settings
-import logging
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
