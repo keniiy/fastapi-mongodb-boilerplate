@@ -3,6 +3,8 @@ User repository for MongoDB.
 Similar structure to SQL UserRepository.
 """
 
+from typing import Any
+
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from app.common.utils.pagination import PaginatedResponse, PaginationParams
@@ -46,28 +48,87 @@ class UserRepository(BaseRepository[User]):
         return await self.update(db, user_id, {"is_active": False})
 
     async def get_all_active(
-        self, db: AsyncIOMotorDatabase, skip: int = 0, limit: int | None = None
+        self,
+        db: AsyncIOMotorDatabase,
+        skip: int = 0,
+        limit: int | None = None,
+        search: str | None = None,
     ) -> list[User]:
-        """Get all active users"""
+        """
+        Get all active users with optional search.
+
+        Args:
+            db: Database instance
+            skip: Number of documents to skip
+            limit: Maximum number of documents to return
+            search: Optional search term to filter by email or phone (case-insensitive partial match)
+        """
+        filter_dict: dict[str, Any] = {"is_active": True}
+
+        # Add search filter if provided
+        if search:
+            filter_dict["$or"] = [
+                {"email": {"$regex": search, "$options": "i"}},
+                {"phone": {"$regex": search, "$options": "i"}},
+            ]
+
         return await self.get_all(
-            db, skip=skip, limit=limit or 100, filter_dict={"is_active": True}
+            db, skip=skip, limit=limit or 100, filter_dict=filter_dict
         )
 
     async def get_all_active_paginated(
-        self, db: AsyncIOMotorDatabase, pagination: PaginationParams
+        self,
+        db: AsyncIOMotorDatabase,
+        pagination: PaginationParams,
+        search: str | None = None,
     ) -> PaginatedResponse[User]:
-        """Get all active users with pagination"""
-        return await self.get_all_paginated(db, pagination, filter_dict={"is_active": True})
+        """
+        Get all active users with pagination and optional search.
+
+        Args:
+            db: Database instance
+            pagination: Pagination parameters
+            search: Optional search term to filter by email or phone (case-insensitive partial match)
+        """
+        filter_dict: dict[str, Any] = {"is_active": True}
+
+        # Add search filter if provided
+        if search:
+            filter_dict["$or"] = [
+                {"email": {"$regex": search, "$options": "i"}},
+                {"phone": {"$regex": search, "$options": "i"}},
+            ]
+
+        return await self.get_all_paginated(db, pagination, filter_dict=filter_dict)
 
     async def get_all_active_with_count(
-        self, db: AsyncIOMotorDatabase, skip: int = 0, limit: int | None = None
+        self,
+        db: AsyncIOMotorDatabase,
+        skip: int = 0,
+        limit: int | None = None,
+        search: str | None = None,
     ) -> tuple[list[User], int]:
         """
         Get all active users with total count.
         Useful when you need both data and count in one call.
+
+        Args:
+            db: Database instance
+            skip: Number of documents to skip
+            limit: Maximum number of documents to return
+            search: Optional search term to filter by email or phone (case-insensitive partial match)
         """
-        total = await self.count(db, {"is_active": True})
-        items = await self.get_all_active(db, skip=skip, limit=limit)
+        filter_dict: dict[str, Any] = {"is_active": True}
+
+        # Add search filter if provided
+        if search:
+            filter_dict["$or"] = [
+                {"email": {"$regex": search, "$options": "i"}},
+                {"phone": {"$regex": search, "$options": "i"}},
+            ]
+
+        total = await self.count(db, filter_dict)
+        items = await self.get_all_active(db, skip=skip, limit=limit, search=search)
         return items, total
 
     async def get_by_role(
