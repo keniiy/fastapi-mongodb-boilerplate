@@ -4,7 +4,6 @@ Similar structure to SQL database.py but using Motor (async MongoDB driver).
 """
 
 import logging
-from typing import Tuple
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from pymongo.errors import ServerSelectionTimeoutError
@@ -49,7 +48,7 @@ async def get_db():
     yield get_database()
 
 
-async def check_database_connection() -> Tuple[bool, str]:
+async def check_database_connection() -> tuple[bool, str]:
     """Check MongoDB connection and return status"""
     try:
         # Ping the server

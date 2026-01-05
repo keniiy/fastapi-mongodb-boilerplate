@@ -9,9 +9,7 @@ from .requests import (
     RegisterRequest,
     UpdateProfileRequest,
 )
-from .responses import (
-    TokenResponse,
-)
+from .responses import TokenResponse
 
 __all__ = [
     "RegisterRequest",

@@ -5,11 +5,10 @@ Similar structure to SQL base_repository.py but using Motor/MongoDB queries.
 
 from abc import ABC
 from datetime import datetime
-from typing import Any, Dict, Generic, List, Optional, TypeVar
+from typing import Any, Generic, TypeVar
 
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from pymongo.errors import DuplicateKeyError
 
 from app.common.utils.pagination import PaginatedResponse, PaginationParams
 
@@ -42,7 +41,7 @@ class BaseRepository(ABC, Generic[ModelType]):
         """Get MongoDB collection"""
         return db[self.collection_name]
 
-    def _to_dict(self, obj: ModelType, exclude_id: bool = False) -> Dict[str, Any]:
+    def _to_dict(self, obj: ModelType, exclude_id: bool = False) -> dict[str, Any]:
         """Convert model to dictionary"""
         if hasattr(obj, "model_dump"):
             data = obj.model_dump()
@@ -52,9 +51,7 @@ class BaseRepository(ABC, Generic[ModelType]):
             data = dict(obj)
 
         # Remove id field as MongoDB uses _id
-        if exclude_id and "id" in data:
-            data.pop("id")
-        elif "id" in data:
+        if exclude_id and "id" in data or "id" in data:
             data.pop("id")
         return data
 
@@ -78,7 +75,7 @@ class BaseRepository(ABC, Generic[ModelType]):
         created = await collection.find_one({"_id": result.inserted_id})
         return self._dict_to_model(created)
 
-    async def get_by_id(self, db: AsyncIOMotorDatabase, id: str) -> Optional[ModelType]:
+    async def get_by_id(self, db: AsyncIOMotorDatabase, id: str) -> ModelType | None:
         """
         Get a document by its _id.
 
@@ -101,8 +98,8 @@ class BaseRepository(ABC, Generic[ModelType]):
         db: AsyncIOMotorDatabase,
         skip: int = 0,
         limit: int = 100,
-        filter_dict: Optional[Dict[str, Any]] = None,
-    ) -> List[ModelType]:
+        filter_dict: dict[str, Any] | None = None,
+    ) -> list[ModelType]:
         """
         Get all documents with pagination.
 
@@ -125,7 +122,7 @@ class BaseRepository(ABC, Generic[ModelType]):
         self,
         db: AsyncIOMotorDatabase,
         pagination: PaginationParams,
-        filter_dict: Optional[Dict[str, Any]] = None,
+        filter_dict: dict[str, Any] | None = None,
     ) -> PaginatedResponse[ModelType]:
         """
         Get all documents with pagination and metadata.
@@ -145,8 +142,8 @@ class BaseRepository(ABC, Generic[ModelType]):
         return PaginatedResponse(items=items, meta=meta)
 
     async def update(
-        self, db: AsyncIOMotorDatabase, id: str, update_data: Dict[str, Any]
-    ) -> Optional[ModelType]:
+        self, db: AsyncIOMotorDatabase, id: str, update_data: dict[str, Any]
+    ) -> ModelType | None:
         """
         Update a document.
 
@@ -187,7 +184,7 @@ class BaseRepository(ABC, Generic[ModelType]):
             return False
 
     async def count(
-        self, db: AsyncIOMotorDatabase, filter_dict: Optional[Dict[str, Any]] = None
+        self, db: AsyncIOMotorDatabase, filter_dict: dict[str, Any] | None = None
     ) -> int:
         """
         Count documents.
@@ -203,7 +200,7 @@ class BaseRepository(ABC, Generic[ModelType]):
         filter_dict = filter_dict or {}
         return await collection.count_documents(filter_dict)
 
-    def _dict_to_model(self, doc: Optional[Dict[str, Any]]) -> Optional[ModelType]:
+    def _dict_to_model(self, doc: dict[str, Any] | None) -> ModelType | None:
         """Convert MongoDB document to model instance"""
         if not doc:
             return None

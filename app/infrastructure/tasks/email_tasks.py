@@ -3,7 +3,6 @@ Email-related background tasks.
 """
 
 import logging
-from typing import Optional
 
 from app.infrastructure.tasks.base import BaseTask
 from app.infrastructure.tasks.celery_app import celery_app
@@ -21,7 +20,7 @@ def send_email(
     to_email: str,
     subject: str,
     body: str,
-    html_body: Optional[str] = None,
+    html_body: str | None = None,
 ) -> dict:
     """
     Send an email asynchronously.

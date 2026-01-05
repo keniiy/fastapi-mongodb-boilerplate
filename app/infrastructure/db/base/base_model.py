@@ -4,7 +4,6 @@ Similar to SQL BaseModel but using Pydantic instead of SQLAlchemy.
 """
 
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -21,9 +20,9 @@ class BaseMongoModel(BaseModel):
         str_strip_whitespace=True,
     )
 
-    id: Optional[str] = Field(None, alias="_id")
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    id: str | None = Field(None, alias="_id")
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
     def __repr__(self):
         return f"<{self.__class__.__name__}(id={self.id})>"

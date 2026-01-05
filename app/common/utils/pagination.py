@@ -3,9 +3,9 @@ Pagination utilities and response models.
 """
 
 from dataclasses import dataclass
-from typing import Any, Generic, List, TypeVar
+from typing import Generic, TypeVar
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 T = TypeVar("T")
 
@@ -58,5 +58,5 @@ class PaginatedResponse(Generic[T]):
     Uses dataclass instead of Pydantic to avoid type conflicts with models.
     """
 
-    items: List[T]
+    items: list[T]
     meta: PaginationMeta

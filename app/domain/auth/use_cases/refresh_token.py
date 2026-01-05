@@ -2,8 +2,6 @@
 Refresh token use case.
 """
 
-from typing import Dict
-
 from app.common.exceptions import UnauthorizedError
 from app.domain.user.types.repository import IUserRepository
 from app.infrastructure.security.jwt import create_access_token, create_refresh_token, decode_token
@@ -15,7 +13,7 @@ class RefreshTokenUseCase:
     def __init__(self, user_repository: IUserRepository):
         self.repository = user_repository
 
-    async def execute(self, refresh_token: str) -> Dict[str, str]:
+    async def execute(self, refresh_token: str) -> dict[str, str]:
         """
         Refresh access token.
 

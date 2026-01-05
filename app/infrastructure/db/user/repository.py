@@ -3,8 +3,6 @@ User repository for MongoDB.
 Similar structure to SQL UserRepository.
 """
 
-from typing import List, Optional, Tuple
-
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from app.common.utils.pagination import PaginatedResponse, PaginationParams
@@ -21,13 +19,13 @@ class UserRepository(BaseRepository[User]):
     def __init__(self):
         super().__init__("users", User)
 
-    async def get_by_email(self, db: AsyncIOMotorDatabase, email: str) -> Optional[User]:
+    async def get_by_email(self, db: AsyncIOMotorDatabase, email: str) -> User | None:
         """Get user by email"""
         collection = self._get_collection(db)
         doc = await collection.find_one({"email": email})
         return self._dict_to_model(doc)
 
-    async def get_by_phone(self, db: AsyncIOMotorDatabase, phone: str) -> Optional[User]:
+    async def get_by_phone(self, db: AsyncIOMotorDatabase, phone: str) -> User | None:
         """Get user by phone"""
         collection = self._get_collection(db)
         doc = await collection.find_one({"phone": phone})
@@ -35,7 +33,7 @@ class UserRepository(BaseRepository[User]):
 
     async def get_by_email_or_phone(
         self, db: AsyncIOMotorDatabase, email: str | None = None, phone: str | None = None
-    ) -> Optional[User]:
+    ) -> User | None:
         """Get user by email or phone"""
         if email:
             return await self.get_by_email(db, email)
@@ -43,13 +41,13 @@ class UserRepository(BaseRepository[User]):
             return await self.get_by_phone(db, phone)
         return None
 
-    async def deactivate(self, db: AsyncIOMotorDatabase, user_id: str) -> Optional[User]:
+    async def deactivate(self, db: AsyncIOMotorDatabase, user_id: str) -> User | None:
         """Soft delete user (set is_active to False)"""
         return await self.update(db, user_id, {"is_active": False})
 
     async def get_all_active(
-        self, db: AsyncIOMotorDatabase, skip: int = 0, limit: Optional[int] = None
-    ) -> List[User]:
+        self, db: AsyncIOMotorDatabase, skip: int = 0, limit: int | None = None
+    ) -> list[User]:
         """Get all active users"""
         return await self.get_all(
             db, skip=skip, limit=limit or 100, filter_dict={"is_active": True}
@@ -62,8 +60,8 @@ class UserRepository(BaseRepository[User]):
         return await self.get_all_paginated(db, pagination, filter_dict={"is_active": True})
 
     async def get_all_active_with_count(
-        self, db: AsyncIOMotorDatabase, skip: int = 0, limit: Optional[int] = None
-    ) -> Tuple[List[User], int]:
+        self, db: AsyncIOMotorDatabase, skip: int = 0, limit: int | None = None
+    ) -> tuple[list[User], int]:
         """
         Get all active users with total count.
         Useful when you need both data and count in one call.
@@ -73,8 +71,8 @@ class UserRepository(BaseRepository[User]):
         return items, total
 
     async def get_by_role(
-        self, db: AsyncIOMotorDatabase, role: str, skip: int = 0, limit: Optional[int] = None
-    ) -> List[User]:
+        self, db: AsyncIOMotorDatabase, role: str, skip: int = 0, limit: int | None = None
+    ) -> list[User]:
         """Get users by role"""
         filter_dict = {"role": role, "is_active": True}
         return await self.get_all(db, skip=skip, limit=limit or 100, filter_dict=filter_dict)
@@ -87,8 +85,8 @@ class UserRepository(BaseRepository[User]):
         return await self.get_all_paginated(db, pagination, filter_dict=filter_dict)
 
     async def get_by_role_with_count(
-        self, db: AsyncIOMotorDatabase, role: str, skip: int = 0, limit: Optional[int] = None
-    ) -> Tuple[List[User], int]:
+        self, db: AsyncIOMotorDatabase, role: str, skip: int = 0, limit: int | None = None
+    ) -> tuple[list[User], int]:
         """Get users by role with total count"""
         filter_dict = {"role": role, "is_active": True}
         total = await self.count(db, filter_dict)

@@ -5,12 +5,10 @@ Sets up test database, client, and common fixtures for MongoDB.
 
 import asyncio
 import os
-from typing import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Generator
 
 import pytest
 from httpx import ASGITransport, AsyncClient
-from motor.motor_asyncio import AsyncIOMotorClient
-from pymongo.errors import ServerSelectionTimeoutError
 
 # Set test environment variables BEFORE importing app
 os.environ["MONGODB_URL"] = os.getenv("TEST_MONGODB_URL", "mongodb://localhost:27017")
@@ -21,7 +19,7 @@ os.environ["ENVIRONMENT"] = "test"
 os.environ["RATE_LIMIT_ENABLED"] = "false"  # Disable rate limiting in tests
 
 from app.app import app
-from app.infrastructure.db.config import get_database, get_db
+from app.infrastructure.db.config import get_db
 
 
 @pytest.fixture(scope="session")
@@ -35,10 +33,9 @@ def event_loop() -> Generator:
 @pytest.fixture(scope="function")
 async def test_db():
     """Create test database and clean up after"""
-    from app.infrastructure.db.config import get_client, get_database
+    from app.infrastructure.db.config import get_client
 
     client = get_client()
-    db = get_database()
     db_name = os.getenv("MONGODB_DATABASE_NAME", "test_db")
     test_db_instance = client[db_name]
 
